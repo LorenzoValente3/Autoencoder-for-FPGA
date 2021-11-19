@@ -1,2 +1,2 @@
 # DL-model-for-FPGA
-Machine Learning model for FPGA implementation using hls4ml. Repository for Applied Electronics Project.
+Deep Learning model for FPGA implementation using hls4ml. Repository for Applied Electronics Project.
