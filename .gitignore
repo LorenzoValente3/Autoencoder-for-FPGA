@@ -130,4 +130,4 @@ dmypy.json
 
 #ignoring large files
 *.npy
-_pycache_
+_pycache_/
