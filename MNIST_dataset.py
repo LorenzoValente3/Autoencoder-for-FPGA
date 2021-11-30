@@ -11,6 +11,7 @@ import scipy
 # | MNIST data class |
 # +------------------+
 
+
 class MNISTData:
     """MNIST data class. You can adjust the data_fraction to use when creating
     the data, according to your system capabilities."""
@@ -20,29 +21,23 @@ class MNISTData:
         (self.x_train, self.y_train), (self.x_test, self.y_test) = data.load_data()
 
         self.get_subset_of_data(data_fraction)
-        if zoom_factor is not None:
-            self.interpolate(zoom_factor)
 
         self.convert_label_to_categorical()
         
         self.normalize_mnist_images()
+        
+        if zoom_factor is not None:
+            self.interpolate(zoom_factor)
 
         self.reshape_to_color_channel()
 
-        
+        self.flatten_pictures()
     
     def interpolate(self, zoom_factor):
-        #self.x_train =  scipy.ndimage.zoom(self.x_train, 
-        #                                    (1, zoom_factor, zoom_factor, 1))
-        #shape_train = self.x_train.shape[1]*self.x_train.shape[2]
-        #self.x_train.reshape([196,])
-        
-        
+        self.x_train =  scipy.ndimage.zoom(self.x_train, 
+                                            (1, zoom_factor, zoom_factor))
         self.x_test =  scipy.ndimage.zoom(self.x_test,
                                         (1, zoom_factor, zoom_factor))
-        
-        #shape_test = self.x_test.shape[1]*self.x_test.shape[2]
-        #self.x_test.reshape([196,])
 
     def convert_label_to_categorical(self):
         self.y_train = to_categorical(self.y_train)
@@ -64,3 +59,7 @@ class MNISTData:
         index = int(len(self.x_test) * data_fraction)
         self.x_test = self.x_test[:index]
         self.y_test = self.y_test[:index]
+    
+    def flatten_pictures(self):
+        self.x_train = self.x_train.reshape(self.x_train.shape[0], -1)
+        self.x_test = self.x_test.reshape(self.x_test.shape[0], -1)
