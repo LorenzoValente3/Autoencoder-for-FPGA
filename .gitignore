@@ -134,7 +134,7 @@ __pycache__/
 images/
 
 #\Report\proj_reference
-Report/proj_reference
+Report/proj_reference/
 *.aux
 *.fdb_latexmk
 *.fls
