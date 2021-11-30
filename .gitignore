@@ -134,4 +134,7 @@ __pycache__/
 images/
 
 Project/proj_reference
-#Project/report.pdf
+*.aux
+*.fdb_latexmk
+*.fls
+*.gz
