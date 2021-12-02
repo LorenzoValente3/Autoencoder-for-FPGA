@@ -44,7 +44,7 @@
 %	DOCUMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{\textbf{An FPGA Implementation of a\\ Deep Autoencoder using hls4ml package}} % Title
+\title{\textbf{An FPGA Implementation of a\\ Deep Variational Autoencoder using hls4ml package}} % Title
 
 \author{Lorenzo \textsc{Valente}} % Author name
 
@@ -78,6 +78,24 @@
 
 \section{Introduction}
 
+The hls4ml package was developed by members of High Energy Physics (HEP) community
+to translate machine learning (ML) algorithms into high level synthesis (HLS) code.
+In the project development, hls4ml was used as the tool to perform 
+this transformation on a trained \textit{Variational Autoencoder} model.
+A schematic workflow is shown in the figure \ref{fig:overview} belown.
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.2]{images/section1/overview.jpg}
+\caption{A typical workflow to translate a model into an FPGA implementationusing hls4ml.}
+\label{fig:overview}
+\end{figure}
+
+The goal of the hls4ml package is to empower a HEP physicist to accelerate
+ML algorithms using FPGAs, thanks to its tools for ML models conversion into HLS. 
+Indeed, hls4ml makes the translation of Python objects into HLS, and its
+synthesis automatic workflow, allowing fast deployment times also for
+those who know how to write software or are not yet experts on FPGAs.
 
 
 %----------------------------------------------------------------------------------------
