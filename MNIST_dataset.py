@@ -16,7 +16,7 @@ class MNISTData:
     """MNIST data class. You can adjust the data_fraction to use when creating
     the data, according to your system capabilities."""
 
-    def __init__(self, data_fraction=1., zoom_factor = None):
+    def __init__(self, data_fraction=1., zoom_factor = None, flat = True):
         data = mnist
         (self.x_train, self.y_train), (self.x_test, self.y_test) = data.load_data()
 
@@ -28,11 +28,23 @@ class MNISTData:
         
         if zoom_factor is not None:
             self.interpolate(zoom_factor)
-
+          
         self.reshape_to_color_channel()
 
-        self.flatten_pictures()
-    
+        #self.crop_center( 22)
+        
+        if flat is True:
+            self.flatten_pictures()
+
+    def crop_center(self,crop):
+        #y,x = self.x_test
+        startx = x//2-(crop//2)
+        starty = y//2-(crop//2)    
+        self.x_test= self.x_test[starty:starty+crop,startx:startx+crop]
+
+
+
+
     def interpolate(self, zoom_factor):
         self.x_train =  scipy.ndimage.zoom(self.x_train, 
                                             (1, zoom_factor, zoom_factor))
