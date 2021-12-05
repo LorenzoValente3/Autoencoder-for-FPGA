@@ -133,7 +133,7 @@ dmypy.json
 __pycache__/
 images/
 
-Report\proj_reference
+
 Report/images/
 *.aux
 *.fdb_latexmk

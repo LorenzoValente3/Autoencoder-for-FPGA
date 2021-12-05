@@ -12,5 +12,5 @@ KerasModel: !keras_model 'model/AE_model/hls4ml_prj/keras_model.h5'
 OutputDir: model/AE_model/hls4ml_prj
 OutputPredictions: null
 ProjectName: myproject
-Stamp: D2cC5DD2
+Stamp: fEe86a0b
 XilinxPart: xcu250-figd2104-2L-e

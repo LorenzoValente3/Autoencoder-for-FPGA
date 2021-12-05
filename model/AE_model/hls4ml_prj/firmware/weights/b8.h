@@ -1,15 +1,15 @@
-//Numpy array shape [2]
+//Numpy array shape [16]
 //Min 0.000000000000
 //Max 0.000000000000
-//Number of zeros 2
+//Number of zeros 16
 
 #ifndef B8_H_
 #define B8_H_
 
 #ifndef __SYNTHESIS__
-model_default_t b8[2];
+model_default_t b8[16];
 #else
-model_default_t b8[2] = {0.0000000000, 0.0000000000};
+model_default_t b8[16] = {0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000, 0.0000000000};
 #endif
 
 #endif

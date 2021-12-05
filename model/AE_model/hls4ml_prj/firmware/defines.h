@@ -11,12 +11,10 @@
 #define N_INPUT_1_1 100
 #define N_LAYER_2 32
 #define N_LAYER_4 16
-#define N_LAYER_6 8
-#define N_LAYER_8 2
-#define N_LAYER_10 8
-#define N_LAYER_12 16
-#define N_LAYER_14 32
-#define N_LAYER_16 100
+#define N_LAYER_6 2
+#define N_LAYER_8 16
+#define N_LAYER_10 32
+#define N_LAYER_12 100
 
 //hls-fpga-machine-learning insert layer-precision
 typedef ap_fixed<16,6> model_default_t;
@@ -32,10 +30,6 @@ typedef ap_fixed<16,6> layer9_t;
 typedef ap_fixed<16,6> layer10_t;
 typedef ap_fixed<16,6> layer11_t;
 typedef ap_fixed<16,6> layer12_t;
-typedef ap_fixed<16,6> layer13_t;
-typedef ap_fixed<16,6> layer14_t;
-typedef ap_fixed<16,6> layer15_t;
-typedef ap_fixed<16,6> layer16_t;
 typedef ap_fixed<16,6> result_t;
 
 #endif
