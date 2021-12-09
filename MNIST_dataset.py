@@ -59,13 +59,20 @@ class MNISTData:
 
         X_train_flat_zoom = []
         X_test_flat_zoom = []
+        
+        X_train_flat_zoom_int = []
+        X_test_flat_zoom_int = []
 
         for image in self.x_train:
             tmp = scipy.ndimage.zoom(image[bordo:bordo_top, bordo:bordo_top],
                                      size_final/size_initial).flatten()
             tmp = (tmp/(256//2**color_depth)).astype(int)
             X_train_flat_zoom.append(tmp/2**color_depth)
+            X_train_flat_zoom_int.append(tmp)
+
         X_train_flat_zoom = np.array(X_train_flat_zoom)
+        X_train_flat_zoom_int = np.array(X_train_flat_zoom_int)
+
         self.x_train=X_train_flat_zoom
 
         #processing Test Set
@@ -74,7 +81,10 @@ class MNISTData:
                                         size_final/size_initial).flatten()
             tmp = (tmp/(256//2**color_depth)).astype(int)
             X_test_flat_zoom.append(tmp/2**color_depth)
+            X_test_flat_zoom_int.append(tmp)
+
         X_test_flat_zoom = np.array(X_test_flat_zoom)
+        X_test_flat_zoom_int = np.array(X_test_flat_zoom_int)
         self.x_test=X_test_flat_zoom
 
 
