@@ -79,7 +79,7 @@
 \section*{\centering{Abstract}}
 In this report is presented an implementation of a \textit{Deep Autoencoder} 
 architecture trained on the MNIST database in FPGA (Field Programmable Gate Array), 
-focusing on machine vision task for the data reconstruction and classification in the latent dimension.
+focusing on machine vision tasks for the data reconstruction and classification in the latent dimension.
 To implement machine learning (ML) models in FPGAs, a companion compiler 
 based on High-Level Synthesis (HLS) called hls4ml is used. 
 
@@ -98,15 +98,15 @@ based on High-Level Synthesis (HLS) called hls4ml is used.
 \end{figure}
 
 
-The hls4ml package was developed by members of High Energy Physics (HEP) community
+The hls4ml package was developed by members of the High Energy Physics (HEP) community
 to translate ML algorithms into HLS code, enabling firmware development times to be drastically reduced.
 In this project development, hls4ml is used as the tool to perform 
 this transformation on a trained Deep Autoencoder model.
 A schematic workflow is shown in figure \ref{fig:overview}.
 
 \par The goal of the hls4ml package is to empower a HEP physicist to accelerate
-ML algorithms using FPGAs, thanks to its tools for the conversion. 
-Indeed, hls4ml makes the translation of Python objects into HLS, and its
+ML algorithms use FPGAs, thanks to their tools for the conversion. 
+Indeed, hls4ml translates Python objects into HLS, and its
 synthesis automatic workflow, allowing fast deployment times also for
 those who know how to write software or are not yet experts on FPGAs.
 
@@ -117,7 +117,7 @@ those who know how to write software or are not yet experts on FPGAs.
 %----------------------------------------------------------------------------------------
 
 \section{Data preparation}
-The first important step prior to model creation is data preparation.
+The first important step before model creation is data preparation.
 \par Vivado HLS capabilities enable to generate hls4ml's cores with 
 at most 4096 parameters calculation, i.e. 12 bit, for each neural network's layer. 
 Considering this constraint, as well as the consistency of the model's output,
@@ -141,10 +141,10 @@ a reduction in the input image resolution is performed on the original datasets.
 
 \par The MNIST database is chosen as input for our model.
 The original database contains handwritten digits, from 0 to 9. 
-MNIST is divided into two datasets: the training set has 60,000 samples and the test set has 10,000.
+MNIST has been divided into two datasets: the training set has 60,000 samples and the test set has 10,000.
 Each image contains a single handwritten digit, each one with 28x28 pixels 
 ranging from 0 to 255, i.e. 8-bit grayscale value.
-\par In particular, the preprocessing that we performed on the original MNIST database consistsed of:
+\par In particular, the preprocessing that we performed on the original MNIST database consists of:
 \begin{itemize}
     \item \textbf{cropping the central portion} from size 28x28 to 22x22 pixels;
     \item \textbf{downsampling} for reducing the resolution from 22x22 to 8x8 pixels;
@@ -164,7 +164,7 @@ and the same figure after the preprocessing.
 \textit{Autoencoding} is a data compression algorithm, where the compression (\textit{encoding}) and decompression (\textit{decoding}) functions are:
 \begin{itemize}
   \item \textbf{data-specific}, therefore they will only be able to compress data similar to what they have been trained on;
-  \item \textbf{lossy}, which means that the decompressed ouputs will be degraded compared to the original inputs;
+  \item \textbf{lossy}, which means that the decompressed outputs will be degraded compared to the original inputs;
   \item \textbf{learned automatically from data examples}, it means that it is easy to train specialised instances of the algorithm, 
           that will perform well on a specific type of input.
 \end{itemize}
@@ -191,7 +191,7 @@ the algorithm's output as well, we find an optimal structure for each layer as d
   \label{fig:ae}
   \end{figure}
 
-\par The loss function used to train an undercomplete autoencoder is called \textit{reconstruction loss},
+\par The loss function used to train an under complete autoencoder is called \textit{reconstruction loss},
 as it is a check of how well the image has been reconstructed from the input.
 Although the reconstruction loss can be anything depending on the input and output,
 we will use an L1 loss to depict the term represented by the equation (\ref{eq:loss}):
@@ -203,17 +203,17 @@ we will use an L1 loss to depict the term represented by the equation (\ref{eq:l
 where $r$ is the ground truth and $\hat{r}$ represents the predicted output.
 
 \par All the layer nodes are activated by the \textit{ReLU} function, 
-with the exception of the last output layer which is activated by the \textit{sigmoid} function. 
+except for the last output layer which is activated by the \textit{sigmoid} function. 
 
 
 
 \subsection{Classifier}
 
-In order to evaluate the correct reconstruction performed by the autoencoder's reconstruction, a classifier has been implemented.
-\par The neural networks architecture, shown in figure \ref{fig:classifier}, is attached to encoder part in the two-dimensional
+To evaluate the correct reconstruction performed by the autoencoder's reconstruction, a classifier has been implemented.
+\par The neural networks architecture, shown in figure \ref{fig:classifier}, is attached to the encoder part in the two-dimensional
 latent space and it works in parallel with the decoder for the decompression. 
 In contrast with the previous architecture, we are now focusing on the classification problem. 
-Therefore, for the output layer the activation function \textit{softmax} is used, so we can train the model exploiting 
+Therefore, for the output layer, the activation function \textit{softmax} is used, so we can train the model exploiting 
 the knowledge on the labels from the input datasets.
 
 \begin{figure}[H]
@@ -236,7 +236,7 @@ aimed at reducing the number of parameters and operations involved in the comput
 by removing connections and thus parameters.
 
 \par This process is commonly called \textbf{weight pruning}, i.e. the elimination of unnecessary values in the weight tensor, 
-by practically setting the parameters values to zero, which will be translated in cutting connections between nodes 
+by practically setting the parameters' values to zero, which will be translated in cutting connections between nodes 
 during the synthesis of the HLS design. 
 The pruning is done during the training process to allow the NN to adapt to the changes.
 
@@ -244,16 +244,16 @@ The pruning is done during the training process to allow the NN to adapt to the 
 It uses an algorithm designed to iteratively remove connections, based on their magnitude during training.
 Therefore, a final target sparsity, i.e. target percentage of weights equal to zero is specified,
 along with a schedule to perform the pruning. 
-For our experiment we start a pruning at step 2000, stop at step 10000 and do it every 100 steps.
+For our experiment, we start pruning at step 2000, stop at step 10000 and do it every 100 steps.
 As training proceeds, the pruning routing is scheduled to execute, removing the weights with the lowest magnitude, 
 until the current sparsity target is reached.
 
 \subsection{Neural Network model performance on CPU}
 
-\par Pruning a model can have a negative effect on accuracy. 
-In order to obtain the best accuracy for our model, we explored the trade-off between accuracy, speed and model size.
-Therefore, we avoid to prune the first layer and the critical layers for compression and decompression of the information.
-We proceeded to prune only the hidden layer with 16 nodes in both compression and decompression part, we reached a sparsity of 80\%. 
+\par Pruning a model can harm accuracy. 
+To obtain the best accuracy for our model, we explored the trade-off between accuracy, speed and model size.
+Therefore, we avoid pruning the first layer and the critical layers for compression and decompression of the information.
+We proceeded to prune only the hidden layer with 16 nodes in both compression and decompression parts, we reached a sparsity of 80\%. 
 In the figure \ref{fig:weights} are shown the distributions of the weights through the layers.
 It can be noticed that in the histograms for the \textit{second}, \textit{fourth} and \textit{fifth} layer we observe large peak in the bin containing '$0$'.
 
@@ -290,9 +290,9 @@ As we can see, we reached a reduction in the total number of parameters of almos
 \end{table} 
 
 Plotted below are model score losses and classifier accuracies. 
-The model has been considereb both with without the classifier for the decompression.
-Model score losses, computed according the equation \ref{eq:loss}, approach zero at high epochs as expected.
-As it can be noticed, bumbs appear near the eigth epoch, meaning that the algorithm for iteratively remove network connection start work.
+The model has been considered both with without the classifier for the decompression.
+Model score losses, computed according to the equation \ref{eq:loss}, approach zero at high epochs as expected.
+As it can be noticed, bumps appear near the eighth epoch, meaning that the algorithm for iteratively removing network connection start work.
 
 \begin{figure}[H]
   \centering
@@ -342,12 +342,12 @@ Accuracies and losses do not suffer so much from the pruning procedure.
   \label{tab:results}
 \end{table}
 
-Plotted below are the distribution of labelled data in its two-latent dimension space.
+Plotted below is the distribution of labelled data in its two-latent dimension space.
 In the latent space, it can be noticed a linear distribution of images. 
-Each of these colored clusters is a type of digit. 
-Close clusters are digits that are structurally similar, i.e. digits that share information in the latent space. 
+Each of these coloured clusters is a type of digit. 
+Close clusters are structurally similar digits, i.e. digits that share information in the latent space. 
 This particular linear distribution describes the fact that we have two dimensions to express a handwritten digit. 
-Then it could happen for certain digit that the height increases and the width increases as well, creating a linear shape in the latent space, as displayed. 
+Then it could happen for certain digits that the height increases and the width increase as well, creating a linear shape in the latent space, as displayed. 
 
 \begin{figure}[H]
   \centering
@@ -364,7 +364,7 @@ Then it could happen for certain digit that the height increases and the width i
 \end{figure}
 
 The last two images of this section represent the original training dataset on the first row and 
-for the second row the reconstructed images after both the complete and pruned model are applied.
+for the second row, the reconstructed images after both the complete and pruned model are applied.
 
 \begin{figure}[H]
   \centering
@@ -382,8 +382,8 @@ for the second row the reconstructed images after both the complete and pruned m
 
 \par The models trained in the previous section were saved into HDF5 files, containing:
 \begin{itemize}
-  \item the architecture of the model, in order to be reproduced when it is needed to be used with other datasets;
-  \item the model weigths;
+  \item the architecture of the model, to be reproduced when it is needed to be used with other datasets;
+  \item the model weights;
   \item the training configuration (losses, optimizers);
   \item the state of the optimizer, allowing to resume training exactly where it was left.
 \end{itemize}
