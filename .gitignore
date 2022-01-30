@@ -130,12 +130,11 @@ dmypy.json
 
 #ignoring large files
 *.npy
-
 __pycache__/
 *.py[cod]
 
 
-Report/
+Report/images
 *.aux
 *.fdb_latexmk
 *.fls
