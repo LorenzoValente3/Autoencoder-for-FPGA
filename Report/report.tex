@@ -82,21 +82,14 @@ architecture trained on the MNIST database in FPGA (Field Programmable Gate Arra
 focusing on machine vision tasks for the data reconstruction and classification in the latent dimension.
 To implement machine learning (ML) models in FPGAs, a companion compiler 
 based on High-Level Synthesis (HLS) called hls4ml is used. 
+In addition, an optimization using both compression and quantization of Neural Neutwork (NN) is perferomed in order to obtain 
+sensible reduction in model size, latency and energy consuption.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
 \section{Introduction}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.17]{images/section1/overview.jpg}
-  \caption{A typical workflow to translate a model into an FPGA implementation using hls4ml.}
-  \label{fig:overview}
-\end{figure}
-
 
 The hls4ml package was developed by members of the High Energy Physics (HEP) community
 to translate ML algorithms into HLS code, enabling firmware development times to be drastically reduced.
@@ -110,6 +103,21 @@ Indeed, hls4ml translates Python objects into HLS, and its
 synthesis automatic workflow, allowing fast deployment times also for
 those who know how to write software or are not yet experts on FPGAs.
 
+\par Hardware used for real-time inference usually has limited computational capacity due to size constraints, 
+and incorporating resource intensive models without a loss in performance poses a challenge.
+One efficient way to reduce a models size, is through post-training
+quantization, where pre-trained model parameters are translated
+into equivalent lower precision parameters.
+However, this processis, by definition, lossy and sacrifices model performance. 
+Therefore, solutions to do quantization-aware training have been suggested.
+In chapter 5, results of quantized compared with non-quantized model is presented.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.17]{images/section1/overview.jpg}
+  \caption{A typical workflow to translate a model into an FPGA implementation using hls4ml.}
+  \label{fig:overview}
+\end{figure}
 
 
 %----------------------------------------------------------------------------------------
@@ -169,6 +177,15 @@ and the same figure after the preprocessing.
           that will perform well on a specific type of input.
 \end{itemize}
 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.35]{images/section3/total_model.png}
+  \caption{total model}
+  \label{fig:classifier}
+  \end{figure}
+
+
 \par The design of a \textbf{deep fully-connected autoencoder} implemented uses an architecture which imposes a \textit{bottleneck} on the network. 
 It forces a compressed knowledge representation of the input data.
 In this implementation, it is used compression in \textit{two-dimensional} latent space. 
@@ -183,7 +200,7 @@ the algorithm's output as well, we find an optimal structure for each layer as d
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.4]{images/section3/autoencoder_reco.png}
+  \includegraphics[scale=0.35]{images/section3/autoencoder_reco.png}
   \caption{Implemented autoencoder model. The \textbf{encoder} (\textit{left part}) takes 64 nodes in input layer, 32 and 16 nodes for
   hidden layers respectively ending up into a compressed two-dimensional latent space. 
   The \textbf{decoder} (\textit{right part}) takes as input the two-dimensional latent space and decompress the information 
@@ -253,16 +270,25 @@ until the current sparsity target is reached.
 \par Pruning a model can harm accuracy. 
 To obtain the best accuracy for our model, we explored the trade-off between accuracy, speed and model size.
 Therefore, we avoid pruning the first layer and the critical layers for compression and decompression of the information.
-We proceeded to prune only the hidden layer with 16 nodes in both compression and decompression parts, we reached a sparsity of 80\%. 
+We proceeded to prune only the hidden layer with 16 nodes in both compression and decompression parts, we reached a sparsity of 85\%. 
 In the figure \ref{fig:weights} are shown the distributions of the weights through the layers.
 It can be noticed that in the histograms for the \textit{second}, \textit{fourth} and \textit{fifth} layer we observe large peak in the bin containing '$0$'.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{images/section4/weights/bitmap.png}
-  \caption{Weights distributions of the pruned model with classifier.}
-  \label{fig:weights}
+  \includegraphics[scale=0.27]{images/section4/nonpruned_weightsdistr.png}
+  \caption{Weights distributions of the \textit{complete} model with classifier.}
+  \label{fig:nonprun_weights}
 \end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.27]{images/section4/pruned_weightsdistr.png}
+  \caption{Weights distributions of the \textit{pruned} model with classifier.}
+  \label{fig:prun_weights}
+\end{figure}
+
+
 
 Summary of the pruning technique in the tab \ref{tab:params}. 
 As we can see, we reached a reduction in the total number of parameters of almost 0.93\%.
@@ -392,16 +418,36 @@ for the second row, the reconstructed images after both the complete and pruned 
 %	SECTION 5
 %----------------------------------------------------------------------------------------
 
-\section{FPGA Implementation}
-\subsection{Laboratory Implementation}
+\section{Neural Network optimization via Quantization}
 
+\textbf{Quantization}, which means conversion of the arithmetic used within the NN from high-precision floating-points 
+to normalized low-precision integers (fixed-point), is an essential step for efficient deployment.
+\par Fixed-point numbers consists of two parts, integer and fractional as shown in figure.
+Compared to floating-point, fixed-point representation maintains
+the decimal point within a fixed position, allowing for more straightforward
+arithmetic operations.
+\par To simplify the procedure of quantizing Keras models, the QKeras library [ref], written on top of Keras,
+has been developed by a collaboration between Google and CERN.
+QKeras enable independent quantization of trainable parameters of layers and intermediate tensors.
+It provides a rich set of quantizers to choose from, enabling mantissa quantization, exponent quantization, binary and ternary quantizers. 
 
+\subsection{Quantization of NN and performance on CPU}
 
-%----------------------------------------------------------------------------------------
-%	SECTION 4
-%----------------------------------------------------------------------------------------
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.27]{images/section4/quantnonpruned_weightsdistr.png}
+  \caption{Weights distributions of the \textit{quantized complete} model with classifier.}
+  \label{fig:quantprun_weights}
+\end{figure}
 
-\section{Experimental Results and discussion}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.27]{images/section4/quantpruned_weightsdistr.png}
+  \caption{Weights distributions of the \textit{quantized pruned} model with classifier.}
+  \label{fig:quantprun_weights}
+\end{figure}
+
+\section{Implementation of NN on a FPGA}
 
 
 
