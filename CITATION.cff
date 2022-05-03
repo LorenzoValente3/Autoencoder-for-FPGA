@@ -3,7 +3,8 @@ message: "If you use this software, please cite it as below."
 authors:
 - family-names: "Valente"
   given-names: "Mona"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
 title: "AE4FPGA"
-date-released: 2022-03-05
+version: 1.0.4
+date-released: 2022-05-03
 url: "https://github.com/LorenzoValente3/Autoencoder-for-FPGA"
+

@@ -75,7 +75,7 @@
 % Abstract text
 % \end{abstract}
 
-
+\clearpage
 \section*{\centering{Abstract}}
 In this report is presented an implementation of a \textit{Deep Autoencoder} 
 architecture trained on the MNIST database in FPGA (Field Programmable Gate Array), 
@@ -85,11 +85,15 @@ based on High-Level Synthesis (HLS) called hls4ml is used.
 In addition, an optimization using both compression and quantization of Neural Neutwork (NN) is perferomed in order to obtain 
 sensible reduction in model size, latency and energy consuption.
 
+\clearpage
+\tableofcontents %index
+\clearpage
+
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-\section{Introduction}
+\section{Introduction} 
 
 The hls4ml package was developed by members of the High Energy Physics (HEP) community
 to translate ML algorithms into HLS code, enabling firmware development times to be drastically reduced.
@@ -106,11 +110,16 @@ those who know how to write software or are not yet experts on FPGAs.
 \par Hardware used for real-time inference usually has limited computational capacity due to size constraints, 
 and incorporating resource intensive models without a loss in performance poses a challenge.
 One efficient way to reduce a models size, is through post-training
-quantization, where pre-trained model parameters are translated
+quantization, where model parameters are translated
 into equivalent lower precision parameters.
-However, this processis, by definition, lossy and sacrifices model performance. 
-Therefore, solutions to do quantization-aware training have been suggested.
+However, this processes, by definition, lossy and sacrifices model performance. 
+Therefore, solutions to do \textit{quantization-aware training} have been suggested.
 In chapter 5, results of quantized compared with non-quantized model is presented.
+This relatively new technique implemented by hls4ml enable to incorporate resource intensive models without
+a loss in performance, providing efficient interference. 
+In this case, a fixed numerical representation is adopted for the whole model and the model training is performed
+enforcing this constraint during weight optimization.
+
 
 \begin{figure}[H]
   \centering
@@ -126,8 +135,8 @@ In chapter 5, results of quantized compared with non-quantized model is presente
 
 \section{Data preparation}
 The first important step before model creation is data preparation.
-\par Vivado HLS capabilities enable to generate hls4ml's cores with 
-at most 4096 parameters calculation, i.e. 12 bit, for each neural network's layer. 
+\par The Vivado HLS capabilities enable to generate hls4ml's cores with 
+at most 1024 parameters calculation, i.e. 10 bit, for each neural network's layer. 
 Considering this constraint, as well as the consistency of the model's output,
 a reduction in the input image resolution is performed on the original datasets. 
 
