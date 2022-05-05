@@ -133,13 +133,7 @@ dmypy.json
 *.py[cod]
 
 #report
-Report/
-*.aux
-*.fdb_latexmk
-*.fls
-*.gz
-*.xdv
-*.pdf
+AE4FPGA/
 
 #folders
 __pycache__/
