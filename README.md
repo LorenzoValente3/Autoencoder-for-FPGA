@@ -5,8 +5,9 @@ To implement machine learning (ML) models in FPGAs, a companion compiler based o
 Furthermore, an optimization using both compression
 and quantization of Neural Networks is performed to obtain sensible reduction in model size, latency and energy consumption.
 
-Repository for Applied Electronics Project.
-
 <p align="center">
-    <img src="ae_reco.png" width="800"\>
+    <img src="ae_reco.png" width="700"\>
 </p>
+
+
+Repository for Applied Electronics Project.
