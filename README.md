@@ -10,4 +10,3 @@ and quantization of Neural Networks is performed to obtain sensible reduction in
 </p>
 
 
-Repository for Applied Electronics Project.
